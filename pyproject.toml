@@ -1,8 +1,0 @@
-[project]
-name = "gurobi_sphinxtheme"
-version = "1.0.0"
-description = "Gurobi Sphinx theme"
-readme = "README.md"
-
-[project.entry-points."sphinx.html_themes"]
-gurobi_sphinxtheme = "gurobi_sphinxtheme"
