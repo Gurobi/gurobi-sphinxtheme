@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gurobi_sphinxtheme"
-version = "1.0.0"
+version = "1.0.0.dev0"
 description = "Gurobi Sphinx theme"
 readme = "README.md"
 dependencies = ["furo == 2023.9.10"]
