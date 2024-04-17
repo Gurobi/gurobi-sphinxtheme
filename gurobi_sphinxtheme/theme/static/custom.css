@@ -18,6 +18,7 @@ p {
   font-size: 14px;
 }
 
-.epilog-table td {
-  border: 0px;
+.epilog-table table {
+  color: gray;
+  box-shadow: none;
 }
