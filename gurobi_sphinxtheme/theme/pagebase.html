@@ -88,7 +88,9 @@
           </label>
         </div>
         <article role="main">
-          {% block content %}{{ body }}{% endblock %}
+          {% block content %}{{ body }}
+          <script src="https://status.gurobi.com/embed/script.js"></script>
+          {% endblock %}
         </article>
       </div>
       <footer>
