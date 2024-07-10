@@ -6,6 +6,11 @@ h2 {
   font-size: 24px;
 }
 
+h2::before {
+  content: "\203A\0020";
+  color: var(--color-brand-primary);
+}
+
 h3 {
   font-size: 20px;
 }
