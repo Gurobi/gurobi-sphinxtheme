@@ -19,6 +19,7 @@ packages = ["gurobi_sphinxtheme"]
 gurobi_sphinxtheme = [
     "theme/theme.conf",
     "theme/*.html",
+    "theme/sidebar/*.html",
     "theme/static/*.svg",
     "theme/static/*.css",
 ]
