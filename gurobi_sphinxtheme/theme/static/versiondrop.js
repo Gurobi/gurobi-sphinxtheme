@@ -54,6 +54,10 @@ function populateVersionDropdown(versions) {
         if (version.slug == "current") {
             // skip, it's just an alias
             return;
+        } else if (version.slug == "latest") {
+            // Note that this branch won't be hit unless the browser is logged
+            // in to readthedocs, so public users won't see the dev entry.
+            textContent = "latest (dev, private)";
         } else if (version.slug == "12.0") {
             // beta
             textContent = "12.0 (Beta)";
