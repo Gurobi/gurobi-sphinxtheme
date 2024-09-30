@@ -21,4 +21,5 @@ gurobi_sphinxtheme = [
     "theme/*.html",
     "theme/static/*.svg",
     "theme/static/*.css",
+    "theme/static/*.js",
 ]

@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block extrahead %}
+{{ super() }}
+<script src="{{ pathto('_static/versiondrop.js', 1) }}"></script>
+<link href="{{ pathto('_static/versiondrop.css', 1) }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
 {% block body -%}
 {{ super() }}
 {% include "partials/icons.html" %}
