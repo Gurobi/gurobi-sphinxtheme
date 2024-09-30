@@ -105,17 +105,20 @@ function renderDownloads(config) {
 
 document.addEventListener("readthedocs-addons-data-ready", function (event) {
   const config = event.detail.data();
+  const thisVersionSlug = getThisVersionSlug();
+  const thisVersionName = getVersionName(thisVersionSlug);
+  const versionsArray = getVersionsArray(config);
 
   const flyout = `
     <div class="rst-versions" data-toggle="rst-versions" role="note">
       <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Gurobi</span>
-        Version ${config.versions.current.slug}
+        Version ${thisVersionName}
         <span class="fa fa-caret-down"></span>
       </span>
       <div class="rst-other-versions">
         <div class="injected">
-          ${renderVersions(getVersionsArray(config), getThisVersionSlug())}
+          ${renderVersions(versionsArray, thisVersionSlug)}
           ${renderDownloads(config)}
           <dl>
             <dt>On Read the Docs</dt>

@@ -24,3 +24,7 @@
 .rst-other-versions {
     display: none;
 }
+
+.rtd-current-item {
+    font-weight: bold;
+}
