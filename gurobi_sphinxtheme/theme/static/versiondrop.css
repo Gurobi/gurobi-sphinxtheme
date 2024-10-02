@@ -92,9 +92,14 @@ ul.fas li .fa-large:before {
     content: "\f0da"
 }
 
+div.rst-versions {
+    border-color: var(--color-foreground-muted);
+    border-style: groove;
+}
+
 .rst-versions {
     color: var(--color-foreground-primary);
-    background: var(--color-background-primary);
+    background: var(--color-background-secondary);
     font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
     z-index: 400
 }
@@ -110,7 +115,7 @@ ul.fas li .fa-large:before {
 
 .rst-versions .rst-current-version {
     padding: 12px;
-    background-color: var(--color-background-primary);
+    background-color: var(--color-background-secondary);
     display: block;
     text-align: right;
     font-size: 90%;
@@ -126,7 +131,7 @@ ul.fas li .fa-large:before {
 
 .rst-versions .rst-current-version .fa {
     color: var(--color-foreground-primary);
-    background-color: var(--color-background-primary)
+    background-color: var(--color-background-secondary)
 }
 
 .rst-versions .rst-current-version .fa-book,
