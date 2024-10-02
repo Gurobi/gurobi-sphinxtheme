@@ -82,16 +82,6 @@ ul.fas li .fa-large:before {
     content: "\f0d8"
 }
 
-.fa-caret-left:before,
-.icon-caret-left:before {
-    content: "\f0d9"
-}
-
-.fa-caret-right:before,
-.icon-caret-right:before {
-    content: "\f0da"
-}
-
 div.rst-versions {
     border-top: 1px solid var(--color-sidebar-search-border);
     border-left: 1px solid var(--color-sidebar-search-border);

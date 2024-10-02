@@ -114,7 +114,7 @@ document.addEventListener("readthedocs-addons-data-ready", function (event) {
       <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Gurobi</span>
         ${thisVersionName}
-        <span class="fa fa-caret-down"></span>
+        <span class="fa fa-caret-up"></span>
       </span>
       <div class="rst-other-versions">
         <div class="injected">
@@ -147,8 +147,16 @@ document.addEventListener("readthedocs-addons-data-ready", function (event) {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
     if (content.style.display === "block") {
+      var spanElement = document.querySelector('span.fa-caret-down');
+      if (spanElement) {
+        spanElement.classList.replace('fa-caret-down', 'fa-caret-up');
+      }
       content.style.display = "none";
     } else {
+      var spanElement = document.querySelector('span.fa-caret-up');
+      if (spanElement) {
+        spanElement.classList.replace('fa-caret-up', 'fa-caret-down');
+      }
       content.style.display = "block";
     }
   });
