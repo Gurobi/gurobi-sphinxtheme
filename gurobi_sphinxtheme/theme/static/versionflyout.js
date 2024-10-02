@@ -113,7 +113,7 @@ document.addEventListener("readthedocs-addons-data-ready", function (event) {
     <div class="rst-versions" data-toggle="rst-versions" role="note">
       <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Gurobi</span>
-        Version ${thisVersionName}
+        ${thisVersionName}
         <span class="fa fa-caret-down"></span>
       </span>
       <div class="rst-other-versions">
