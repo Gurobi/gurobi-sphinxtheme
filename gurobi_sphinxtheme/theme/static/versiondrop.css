@@ -204,14 +204,3 @@ div.rst-versions {
     display: block;
     text-align: center
 }
-
-@media screen and (max-width:768px) {
-    .rst-versions {
-        width: 85%;
-        display: none
-    }
-
-    .rst-versions.shift {
-        display: block
-    }
-}
