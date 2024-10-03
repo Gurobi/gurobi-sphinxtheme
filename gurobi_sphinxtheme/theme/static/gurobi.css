@@ -27,14 +27,6 @@ h2::before {
   color: var(--color-brand-primary);
 }
 
-table.epilog {
-  box-shadow: none;
-}
-
-table.epilog th, table.epilog td {
-  border-color: transparent;
-} 
-
 .search__outer__input {
   color: black;
 }
