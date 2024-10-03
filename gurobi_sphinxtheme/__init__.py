@@ -7,6 +7,8 @@ from sphinx.util import logging
 logger = logging.getLogger(__name__)
 here = pathlib.Path(__file__).parent
 
+READTHEDOCS_BUILD = (os.environ.get("READTHEDOCS", "") == "True")
+
 
 def setup_context(app, pagename, templatename, context, doctree):
     """
@@ -95,11 +97,40 @@ def setup_context(app, pagename, templatename, context, doctree):
         )
 
 
+def configure_sitemap(config):
+    # Set canonical URL from the Read the Docs Domain
+    config.html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "")
+
+    # Build the sitemap using the base url
+    extensions.append("sphinx_sitemap")
+    rtd_version = os.environ.get("READTHEDOCS_VERSION", "unknown")
+    config.sitemap_filename = f"sitemap-{rtd_version}.xml"
+    config.sitemap_url_scheme = "{link}"
+    config.sitemap_excludes = [
+        "index.html",
+        "genindex.html",
+        "404.html",
+        "search.html",
+    ]
+
+
+def update_config(config):
+    config.copyright = "2024, Gurobi Optimization, LLC"
+    config.author = "Gurobi Optimization, LLC"
+    config.html_favicon = "https://www.gurobi.com/favicon.ico"
+
+    if READTHEDOCS_BUILD:
+        configure_sphinx_sitemap(config)
+
+
 def update_config(app):
     """
     Sets options for furo, without theme users having to do it themselves.
     See https://chrisholdgraf.com/blog/2022/sphinx-update-config/
     """
+
+    update_config(config)
+
     app.builder.theme_options.update({
         "light_css_variables": {
             "color-brand-primary": "#DD2113",
@@ -121,5 +152,8 @@ def update_config(app):
 
 def setup(app):
     app.add_html_theme("gurobi_sphinxtheme", here / "theme")
+    app.connect("config-inited", update_options)
     app.connect("html-page-context", setup_context)
     app.connect("builder-inited", update_config)
+    if READTHEDOCS_BUILD:
+        app.setup_extension("sphinx_sitemap")
