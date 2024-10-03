@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block extrahead %}
+{{ super() }}
+{% if gurobi_rtd_version != "current" %}
+<meta name="robots" content="noindex">
+{% endif %}
+{% endblock %}
+
 {% block body -%}
 {{ super() }}
 {% include "partials/icons.html" %}
