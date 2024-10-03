@@ -13,6 +13,9 @@ dependencies = ["furo == 2024.1.29"]
 gurobi_sphinxtheme = "gurobi_sphinxtheme"
 docs_gurobi_com = "docs_gurobi_com"
 
+[project.optional-dependencies]
+docs_gurobi_com = ["sphinx_sitemap>=2.6,<2.7"]
+
 [tool.setuptools]
 packages = [
     "gurobi_sphinxtheme",
