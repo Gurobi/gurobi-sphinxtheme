@@ -1,0 +1,7 @@
+table.epilog {
+  box-shadow: none;
+}
+
+table.epilog th, table.epilog td {
+  border-color: transparent;
+}
