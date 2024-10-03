@@ -22,7 +22,7 @@ def configure_sitemap(config):
     config.sitemap_filename = f"sitemap-{rtd_version}.xml"
     config.sitemap_url_scheme = "{link}"
     config.sitemap_excludes = [
-        "index.html",
+        "modindex.html",
         "genindex.html",
         "404.html",
         "search.html",
