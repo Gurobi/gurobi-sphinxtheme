@@ -4,6 +4,8 @@ import re
 
 from sphinx.util import logging
 
+from docs_gurobi_com.latex import configure_latex
+
 logger = logging.getLogger(__name__)
 here = pathlib.Path(__file__).parent
 
@@ -136,8 +138,17 @@ def builder_inited_readthedocs(app):
     ]
 
 
+def config_inited(app, config):
+    if os.environ.get("READTHEDOCS", "") == "True":
+        configure_latex(config, os.environ.get("READTHEDOCS_GIT_COMMIT_HASH", ""))
+    else:
+        configure_latex(config)
+
+
 def setup(app):
     app.add_html_theme("docs_gurobi_com", here / "theme")
+
+    app.connect("config-inited", config_inited)
 
     if os.environ.get("READTHEDOCS", "") == "True":
         # Building on readthedocs, or with readthedocs environment variables
