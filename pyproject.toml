@@ -28,10 +28,12 @@ gurobi_sphinxtheme = [
     "theme/*.html",
     "theme/static/*.svg",
     "theme/static/*.css",
+    "theme/static/*.js",
 ]
 docs_gurobi_com = [
     "theme/theme.conf",
     "theme/*.html",
     "theme/static/*.svg",
     "theme/static/*.css",
+    "theme/static/*.js",
 ]

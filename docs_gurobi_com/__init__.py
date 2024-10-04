@@ -7,10 +7,13 @@ from sphinx.util import logging
 logger = logging.getLogger(__name__)
 here = pathlib.Path(__file__).parent
 
-READTHEDOCS_BUILD = os.environ.get("READTHEDOCS", "") == "True"
+
+def html_page_context(app, pagename, templatename, context, doctree):
+    """Base version does not manipulate the context"""
+    pass
 
 
-def setup_context(app, pagename, templatename, context, doctree):
+def html_page_context_readthedocs(app, pagename, templatename, context, doctree):
     """
     Configures jinja variables based on readthedocs environment variables. If
     they are not set, no version warning banner is shown.
@@ -57,59 +60,75 @@ def setup_context(app, pagename, templatename, context, doctree):
       export READTHEDOCS_CANONICAL_URL="./latest/"
     """
 
-    if os.environ.get("READTHEDOCS") == "True":
+    # Add RTD context onto whatever is set by default
+    html_page_context(app, pagename, templatename, context, doctree)
 
-        # Version and url information. Store these in distinct jinja variables
-        # to prevent clashes with themes we inherit from.
-        context["gurobi_rtd"] = "true"
-        context["gurobi_rtd_version"] = os.environ.get("READTHEDOCS_VERSION")
-        context["gurobi_rtd_version_type"] = os.environ.get("READTHEDOCS_VERSION_TYPE")
-        context["gurobi_rtd_canonical_url"] = os.environ.get(
-            "READTHEDOCS_CANONICAL_URL"
+    # Note: RTD advised to set this manually, but for now we should not. It
+    # enables furo's readthedocs customisation which has not kept up with the
+    # addons.
+    # Tell Jinja2 templates the build is running on Read the Docs
+    # context["READTHEDOCS"] = True
+
+    # Version and url information. Store these in distinct jinja variables
+    # to prevent clashes with themes we inherit from.
+    context["gurobi_rtd"] = "true"
+    context["gurobi_rtd_version"] = os.environ.get("READTHEDOCS_VERSION")
+    context["gurobi_rtd_version_type"] = os.environ.get("READTHEDOCS_VERSION_TYPE")
+    context["gurobi_rtd_canonical_url"] = os.environ.get("READTHEDOCS_CANONICAL_URL")
+
+    # For branch (i.e. not pull request) builds, get the canonical URL of
+    # the current version.
+    if context["gurobi_rtd_version_type"] == "branch":
+        stem, mid, _ = context["gurobi_rtd_canonical_url"].rpartition(
+            context["gurobi_rtd_version"]
         )
-
-        # For branch (i.e. not pull request) builds, get the canonical URL of
-        # the current version.
-        if context["gurobi_rtd_version_type"] == "branch":
-            stem, mid, _ = context["gurobi_rtd_canonical_url"].rpartition(
-                context["gurobi_rtd_version"]
-            )
-            if mid and stem.endswith("/"):
-                context["gurobi_rtd_current_url"] = stem + "current/"
-            else:
-                # Might not be versioned. Don't render the banner.
-                logger.info("Unexpected value: url={} version={}".format(
+        if mid and stem.endswith("/"):
+            context["gurobi_rtd_current_url"] = stem + "current/"
+        else:
+            # Might not be versioned. Don't render the banner.
+            logger.warning(
+                "Unexpected value: url={} version={}".format(
                     context["gurobi_rtd_canonical_url"],
                     context["gurobi_rtd_version"],
-                ))
-                logger.info("gurobi_rtd_version reset to 'current'")
-                context["gurobi_rtd_current_url"] = context["gurobi_rtd_canonical_url"]
-                context["gurobi_rtd_version"] = "current"
+                )
+            )
+            logger.warning("gurobi_rtd_version reset to 'current'")
+            context["gurobi_rtd_current_url"] = context["gurobi_rtd_canonical_url"]
+            context["gurobi_rtd_version"] = "current"
 
-        # URL for the issues page of the source repo.
-        git_clone_url = os.environ.get("READTHEDOCS_GIT_CLONE_URL")
-        match = re.match(r"git@github\.com:Gurobi/([\w-]+)\.git", git_clone_url)
-        if not match:
-            raise ValueError(f"Unexpected value: GIT_CLONE_URL={git_clone_url}")
-        repo_name = match.group(1)
-        context["gurobi_gh_issue_url"] = (
-            f"https://github.com/Gurobi/{repo_name}/issues/new?labels=bug&template=bug_report.md"
-        )
+    # URL for the issues page of the source repo.
+    git_clone_url = os.environ.get("READTHEDOCS_GIT_CLONE_URL")
+    match = re.match(r"git@github\.com:Gurobi/([\w-]+)\.git", git_clone_url)
+    if not match:
+        raise ValueError(f"Unexpected value: GIT_CLONE_URL={git_clone_url}")
+    repo_name = match.group(1)
+    context["gurobi_gh_issue_url"] = (
+        f"https://github.com/Gurobi/{repo_name}/issues/new?labels=bug&template=bug_report.md"
+    )
 
 
-def configure_sitemap(config):
-    # Add configuration needed for the sphinx-sitemap extension on readthedocs
-    if not READTHEDOCS_BUILD:
-        return
+def builder_inited(app):
+    """Update configuration with some common properties used across
+    docs.gurobi.com. Note that this overrides settings from individual project's
+    conf.py files."""
+    app.config.copyright = "2024, Gurobi Optimization, LLC"
+    app.config.author = "Gurobi Optimization, LLC"
+    app.config.html_favicon = "https://www.gurobi.com/favicon.ico"
+
+
+def builder_inited_readthedocs(app):
+    # Add RTD context onto whatever is set by default
+    builder_inited(app)
 
     # Set canonical URL from the Read the Docs Domain
-    config.html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "")
+    app.config.html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "")
 
-    # Build a sitemap using the canonical URL, excluding non-content files
+    # Configure sphinx-sitemap to use the canonical URL and excluding
+    # non-content files
     rtd_version = os.environ.get("READTHEDOCS_VERSION", "unknown")
-    config.sitemap_filename = f"sitemap-{rtd_version}.xml"
-    config.sitemap_url_scheme = "{link}"
-    config.sitemap_excludes = [
+    app.config.sitemap_filename = f"sitemap-{rtd_version}.xml"
+    app.config.sitemap_url_scheme = "{link}"
+    app.config.sitemap_excludes = [
         "modindex.html",
         "genindex.html",
         "404.html",
@@ -117,26 +136,18 @@ def configure_sitemap(config):
     ]
 
 
-def update_config(config):
-    # Update configuration with some common properties used across
-    # docs.gurobi.com. Note that this overrides settings from individual
-    # project's conf.py files.
-    config.copyright = "2024, Gurobi Optimization, LLC"
-    config.author = "Gurobi Optimization, LLC"
-    config.html_favicon = "https://www.gurobi.com/favicon.ico"
-
-
-def builder_inited(app):
-    update_config(app.config)
-    configure_sitemap(app.config)
-
-
 def setup(app):
     app.add_html_theme("docs_gurobi_com", here / "theme")
-    app.connect("builder-inited", builder_inited)
-    app.connect("html-page-context", setup_context)
 
-    # The sphinx-sitemap extension requires html_baseurl to be set. This is only
-    # done if running on readthedocs.
-    if READTHEDOCS_BUILD:
+    if os.environ.get("READTHEDOCS", "") == "True":
+        # Building on readthedocs, or with readthedocs environment variables
+        logger.info("docs.gurobi.com theme: running in readthedocs mode")
+        app.connect("builder-inited", builder_inited_readthedocs)
+        app.connect("html-page-context", html_page_context_readthedocs)
+        # The sphinx-sitemap extension requires html_baseurl to be set. This is
+        # only done if running on readthedocs, so only enable it there.
         app.setup_extension("sphinx_sitemap")
+    else:
+        # Building without readthedocs customisation
+        app.connect("builder-inited", builder_inited)
+        app.connect("html-page-context", html_page_context)
