@@ -1,4 +1,5 @@
 import os
+import functools
 import pathlib
 import re
 
@@ -8,11 +9,6 @@ from docs_gurobi_com.latex import configure_latex
 
 logger = logging.getLogger(__name__)
 here = pathlib.Path(__file__).parent
-
-
-def html_page_context(app, pagename, templatename, context, doctree):
-    """Base version does not manipulate the context"""
-    pass
 
 
 def html_page_context_readthedocs(app, pagename, templatename, context, doctree):
@@ -61,9 +57,6 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
       export READTHEDOCS_VERSION="latest"
       export READTHEDOCS_CANONICAL_URL="./latest/"
     """
-
-    # Add RTD context onto whatever is set by default
-    html_page_context(app, pagename, templatename, context, doctree)
 
     # Note: RTD advised to set this manually, but for now we should not. It
     # enables furo's readthedocs customisation which has not kept up with the
@@ -119,8 +112,6 @@ def builder_inited(app):
 
 
 def builder_inited_readthedocs(app):
-    # Add RTD context onto whatever is set by default
-    builder_inited(app)
 
     # Set canonical URL from the Read the Docs Domain
     app.config.html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "")
@@ -138,27 +129,34 @@ def builder_inited_readthedocs(app):
     ]
 
 
-def config_inited(app, config):
-    if os.environ.get("READTHEDOCS", "") == "True":
-        configure_latex(config, os.environ.get("READTHEDOCS_GIT_COMMIT_HASH", ""))
-    else:
-        configure_latex(config)
+def config_inited(app, config, git_commit_hash):
+    # Note: running this at builder_inited seems to be too late.
+    # TODO: fold the builder_inited commands in here (requires that all users
+    # add docs_gurobi_com as an *extension*, not just a theme).
+    configure_latex(config, git_commit_hash)
 
 
 def setup(app):
+
+    readthedocs = os.environ.get("READTHEDOCS", "") == "True"
+    if readthedocs:
+        logger.info("docs.gurobi.com theme: running in readthedocs mode")
+
     app.add_html_theme("docs_gurobi_com", here / "theme")
 
-    app.connect("config-inited", config_inited)
+    git_commit_hash = None
+    if readthedocs:
+        git_commit_hash = os.environ.get("READTHEDOCS_GIT_COMMIT_HASH")
 
-    if os.environ.get("READTHEDOCS", "") == "True":
-        # Building on readthedocs, or with readthedocs environment variables
-        logger.info("docs.gurobi.com theme: running in readthedocs mode")
+    app.connect("config-inited", functools.partial(config_inited, git_commit_hash=git_commit_hash))
+    app.connect("builder-inited", builder_inited)
+
+    # Additional configuration on readthedocs
+    if readthedocs:
+
         app.connect("builder-inited", builder_inited_readthedocs)
         app.connect("html-page-context", html_page_context_readthedocs)
+
         # The sphinx-sitemap extension requires html_baseurl to be set. This is
         # only done if running on readthedocs, so only enable it there.
         app.setup_extension("sphinx_sitemap")
-    else:
-        # Building without readthedocs customisation
-        app.connect("builder-inited", builder_inited)
-        app.connect("html-page-context", html_page_context)

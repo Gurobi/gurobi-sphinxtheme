@@ -1,0 +1,6 @@
+export READTHEDOCS="True"
+export READTHEDOCS_VERSION_TYPE="branch"
+export READTHEDOCS_GIT_CLONE_URL="git@github.com:Gurobi/repo.git"
+export READTHEDOCS_GIT_COMMIT_HASH="aabbccddeeffgg"
+export READTHEDOCS_VERSION="10.0"
+export READTHEDOCS_CANONICAL_URL="./10.0/"
