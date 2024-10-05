@@ -148,7 +148,10 @@ def setup(app):
     if readthedocs:
         git_commit_hash = os.environ.get("READTHEDOCS_GIT_COMMIT_HASH")
 
-    app.connect("config-inited", functools.partial(config_inited, git_commit_hash=git_commit_hash))
+    app.connect(
+        "config-inited",
+        functools.partial(config_inited, git_commit_hash=git_commit_hash),
+    )
     app.connect("builder-inited", builder_inited)
 
     # Additional configuration on readthedocs
