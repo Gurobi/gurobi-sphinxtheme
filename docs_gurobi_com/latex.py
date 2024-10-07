@@ -2,6 +2,8 @@ import pathlib
 
 from sphinx.util import logging
 
+import docs_gurobi_com.versions as gurobi_versions
+
 logger = logging.getLogger(__name__)
 here = pathlib.Path(__file__).parent
 
@@ -17,7 +19,12 @@ def configure_latex(config, git_commit_hash=None):
     # not defined, no version line is added to the title page (this is also a
     # valid setup, e.g. for the cloud guide which is not versioned).
     if config.version:
-        version_string = f"Version {config.version}"
+        if gurobi_versions.is_beta_version(config.version):
+            version_string = f"Version {config.version} (beta)"
+        elif gurobi_versions.is_released_version(config.version):
+            version_string = f"Version {config.version}"
+        else:
+            version_string = f"Version {config.version} (dev)"
     else:
         version_string = ""
 
