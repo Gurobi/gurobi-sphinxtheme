@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools ~= 69.2"]
+requires = ["setuptools ~= 75.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,14 +7,19 @@ name = "gurobi_sphinxtheme"
 version = "1.0.0"
 description = "Gurobi Sphinx theme"
 readme = "README.md"
-dependencies = ["furo == 2024.1.29"]
+dependencies = [
+    "furo",
+]
 
 [project.entry-points."sphinx.html_themes"]
 gurobi_sphinxtheme = "gurobi_sphinxtheme"
 docs_gurobi_com = "docs_gurobi_com"
 
 [project.optional-dependencies]
-docs_gurobi_com = ["sphinx_sitemap>=2.6,<2.7"]
+docs_gurobi_com = [
+    "sphinx_sitemap>=2.6,<2.7",
+    "furo == 2024.1.29",
+]
 
 [tool.setuptools]
 packages = [
