@@ -20,10 +20,12 @@ def builder_inited(app):
                 "color-topic-title-background": "#1675A933",
                 "color-admonition-title--important": "#1675A9",
                 "color-admonition-title-background--important": "#1675A933",
+                "color-brand-visited": "#1675A9",
             },
             "dark_css_variables": {
                 "color-brand-primary": "#DC4747",
                 "color-brand-content": "#5A9BD5",
+                "color-brand-visited": "#5A9BD5",
             },
             "light_logo": "gurobi_light.svg",
             "dark_logo": "gurobi_dark.svg",
