@@ -110,6 +110,15 @@ def builder_inited(app):
     app.config.author = "Gurobi Optimization, LLC"
     app.config.html_favicon = "https://www.gurobi.com/favicon.ico"
 
+    # Uses sphinx defaults for 'last updated' footer, see
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_last_updated_fmt
+    app.config.html_last_updated_fmt = ""
+
+    # Disable sphinx default behaviour which adds a link to all images to their
+    # original-size file. This doesn't suit our use of figures.
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_scaled_image_link
+    app.config.html_scaled_image_link = False
+
 
 def builder_inited_readthedocs(app):
 
