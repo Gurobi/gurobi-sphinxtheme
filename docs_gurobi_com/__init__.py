@@ -1,16 +1,14 @@
 import os
+import functools
 import pathlib
 import re
 
 from sphinx.util import logging
 
+from docs_gurobi_com.latex import configure_latex
+
 logger = logging.getLogger(__name__)
 here = pathlib.Path(__file__).parent
-
-
-def html_page_context(app, pagename, templatename, context, doctree):
-    """Base version does not manipulate the context"""
-    pass
 
 
 def html_page_context_readthedocs(app, pagename, templatename, context, doctree):
@@ -59,9 +57,6 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
       export READTHEDOCS_VERSION="latest"
       export READTHEDOCS_CANONICAL_URL="./latest/"
     """
-
-    # Add RTD context onto whatever is set by default
-    html_page_context(app, pagename, templatename, context, doctree)
 
     # Note: RTD advised to set this manually, but for now we should not. It
     # enables furo's readthedocs customisation which has not kept up with the
@@ -115,10 +110,17 @@ def builder_inited(app):
     app.config.author = "Gurobi Optimization, LLC"
     app.config.html_favicon = "https://www.gurobi.com/favicon.ico"
 
+    # Uses sphinx defaults for 'last updated' footer, see
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_last_updated_fmt
+    app.config.html_last_updated_fmt = ""
+
+    # Disable sphinx default behaviour which adds a link to all images to their
+    # original-size file. This doesn't suit our use of figures.
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_scaled_image_link
+    app.config.html_scaled_image_link = False
+
 
 def builder_inited_readthedocs(app):
-    # Add RTD context onto whatever is set by default
-    builder_inited(app)
 
     # Set canonical URL from the Read the Docs Domain
     app.config.html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "")
@@ -136,18 +138,37 @@ def builder_inited_readthedocs(app):
     ]
 
 
+def config_inited(app, config, git_commit_hash):
+    # Note: running this at builder_inited seems to be too late.
+    # TODO: fold the builder_inited commands in here (requires that all users
+    # add docs_gurobi_com as an *extension*, not just a theme).
+    configure_latex(config, git_commit_hash)
+
+
 def setup(app):
+
+    readthedocs = os.environ.get("READTHEDOCS", "") == "True"
+    if readthedocs:
+        logger.info("docs.gurobi.com theme: running in readthedocs mode")
+
     app.add_html_theme("docs_gurobi_com", here / "theme")
 
-    if os.environ.get("READTHEDOCS", "") == "True":
-        # Building on readthedocs, or with readthedocs environment variables
-        logger.info("docs.gurobi.com theme: running in readthedocs mode")
+    git_commit_hash = None
+    if readthedocs:
+        git_commit_hash = os.environ.get("READTHEDOCS_GIT_COMMIT_HASH")
+
+    app.connect(
+        "config-inited",
+        functools.partial(config_inited, git_commit_hash=git_commit_hash),
+    )
+    app.connect("builder-inited", builder_inited)
+
+    # Additional configuration on readthedocs
+    if readthedocs:
+
         app.connect("builder-inited", builder_inited_readthedocs)
         app.connect("html-page-context", html_page_context_readthedocs)
+
         # The sphinx-sitemap extension requires html_baseurl to be set. This is
         # only done if running on readthedocs, so only enable it there.
         app.setup_extension("sphinx_sitemap")
-    else:
-        # Building without readthedocs customisation
-        app.connect("builder-inited", builder_inited)
-        app.connect("html-page-context", html_page_context)
