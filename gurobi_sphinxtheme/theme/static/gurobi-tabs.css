@@ -1,0 +1,58 @@
+/* Adjust sphinx-tabs style to be a bit more like sphinx-inline-tabs */
+
+.sphinx-tabs-tab {
+    padding-top: 0.1rem;
+    padding-bottom: 0.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-family: var(--font-stack);
+    font-size: 0.875em;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid;
+    margin: -1px;
+    border-color: transparent;
+}
+
+.sphinx-tabs-tab[aria-selected="true"] {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid;
+    margin: -1px;
+    border-color: var(--color-brand-secondary);
+}
+
+.sphinx-tabs-tab:hover {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid;
+    margin: -1px;
+    border-color: transparent;
+    border-color: var(--color-foreground-secondary);
+}
+
+[role="tablist"] {
+    border-bottom: 0.5px solid;
+    border-color: var(--color-foreground-secondary);
+}
+
+.sphinx-tabs-panel {
+
+    /* Disable defaults set by sphinx-tabs */
+    padding-top: 0.5rem;
+    padding-bottom: 0.0rem;
+    padding-right: 0rem;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 0;
+
+    /* Q: is the border needed? Or is the padding/indent enough? */
+    padding-left: 1rem;
+    border-left: 0.5px solid;
+    border-color: var(--color-foreground-secondary);
+
+}

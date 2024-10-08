@@ -36,3 +36,5 @@ def builder_inited(app):
 def setup(app):
     app.add_html_theme("gurobi_sphinxtheme", here / "theme")
     app.connect("builder-inited", builder_inited)
+    # Need higher priority to overrule sphinx-tabs
+    app.add_css_file("gurobi-tabs.css", priority=600)
