@@ -14,6 +14,10 @@
     margin: -1px;
     border-color: transparent;
 }
+body[data-theme="dark"] .sphinx-tabs-tab {
+    background-color: transparent;
+    border-color: transparent;
+}
 
 .sphinx-tabs-tab[aria-selected="true"] {
     border-top: none;
@@ -23,6 +27,9 @@
     margin: -1px;
     border-color: var(--color-brand-secondary);
 }
+body[data-theme="dark"] .sphinx-tabs-tab[aria-selected="true"] {
+    background-color: transparent;
+}
 
 .sphinx-tabs-tab:hover {
     border-top: none;
@@ -30,13 +37,19 @@
     border-right: none;
     border-bottom: 2px solid;
     margin: -1px;
-    border-color: transparent;
+    border-color: var(--color-foreground-secondary);
+}
+body[data-theme="dark"] .sphinx-tabs-tab:hover {
     border-color: var(--color-foreground-secondary);
 }
 
 [role="tablist"] {
     border-bottom: 0.5px solid;
-    border-color: var(--color-foreground-secondary);
+    border-color: #a0b3bf;
+}
+body[data-theme="dark"] [role="tablist"] {
+    border-bottom: 0.5px solid;
+    border-color: #a0b3bf;
 }
 
 .sphinx-tabs-panel {
@@ -53,6 +66,9 @@
     /* Q: is the border needed? Or is the padding/indent enough? */
     padding-left: 1rem;
     border-left: 0.5px solid;
-    border-color: var(--color-foreground-secondary);
+    border-color: #a0b3bf;
 
+}
+body[data-theme="dark"] .sphinx-tabs-panel {
+    background-color: var(--color-background-primary);
 }
