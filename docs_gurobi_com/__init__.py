@@ -108,7 +108,9 @@ def builder_inited(app):
     conf.py files."""
     app.config.copyright = "2024, Gurobi Optimization, LLC"
     app.config.author = "Gurobi Optimization, LLC"
-    app.config.html_favicon = "https://www.gurobi.com/favicon.ico"
+
+    # Local copy in static directory, from gurobi.com/favicon.ico
+    app.config.html_favicon = "favicon.ico"
 
     # Uses sphinx defaults for 'last updated' footer, see
     # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_last_updated_fmt
