@@ -119,6 +119,9 @@ def builder_inited(app):
     # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_scaled_image_link
     app.config.html_scaled_image_link = False
 
+    # Don't copy sources into the build
+    app.config.html_copy_source = False
+
 
 def builder_inited_readthedocs(app):
 
