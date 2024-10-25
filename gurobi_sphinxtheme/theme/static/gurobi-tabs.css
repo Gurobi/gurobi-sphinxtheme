@@ -37,10 +37,10 @@ body[data-theme="dark"] .sphinx-tabs-tab[aria-selected="true"] {
     border-right: none;
     border-bottom: 2px solid;
     margin: -1px;
-    border-color: var(--color-foreground-secondary);
+    border-color: var(--color-brand-content);
 }
 body[data-theme="dark"] .sphinx-tabs-tab:hover {
-    border-color: var(--color-foreground-secondary);
+    border-color: var(--color-brand-content);
 }
 
 [role="tablist"] {
