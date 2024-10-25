@@ -65,8 +65,7 @@ body[data-theme="dark"] [role="tablist"] {
 
     /* Q: is the border needed? Or is the padding/indent enough? */
     padding-left: 1rem;
-    border-left: 0.5px solid;
-    border-color: #a0b3bf;
+    border-left: none;
 
 }
 body[data-theme="dark"] .sphinx-tabs-panel {
