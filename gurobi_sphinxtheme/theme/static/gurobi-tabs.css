@@ -1,0 +1,73 @@
+/* Adjust sphinx-tabs style to be a bit more like sphinx-inline-tabs */
+
+.sphinx-tabs-tab {
+    padding-top: 0.1rem;
+    padding-bottom: 0.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-family: var(--font-stack);
+    font-size: 0.875em;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid;
+    margin: -1px;
+    border-color: transparent;
+}
+body[data-theme="dark"] .sphinx-tabs-tab {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.sphinx-tabs-tab[aria-selected="true"] {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid;
+    margin: -1px;
+    border-color: var(--color-brand-secondary);
+}
+body[data-theme="dark"] .sphinx-tabs-tab[aria-selected="true"] {
+    background-color: transparent;
+}
+
+.sphinx-tabs-tab:hover {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid;
+    margin: -1px;
+    border-color: var(--color-brand-content);
+}
+body[data-theme="dark"] .sphinx-tabs-tab:hover {
+    border-color: var(--color-brand-content);
+}
+
+[role="tablist"] {
+    border-bottom: 0.5px solid;
+    border-color: #a0b3bf;
+}
+body[data-theme="dark"] [role="tablist"] {
+    border-bottom: 0.5px solid;
+    border-color: #a0b3bf;
+}
+
+.sphinx-tabs-panel {
+
+    /* Disable defaults set by sphinx-tabs */
+    padding-top: 0.5rem;
+    padding-bottom: 0.0rem;
+    padding-right: 0rem;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 0;
+
+    /* Q: is the border needed? Or is the padding/indent enough? */
+    padding-left: 1rem;
+    border-left: none;
+
+}
+body[data-theme="dark"] .sphinx-tabs-panel {
+    background-color: var(--color-background-primary);
+}
