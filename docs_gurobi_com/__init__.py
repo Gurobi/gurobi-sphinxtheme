@@ -119,6 +119,10 @@ def builder_inited(app):
     # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_scaled_image_link
     app.config.html_scaled_image_link = False
 
+    # We use sphinx-tabs for language switching in examples, collapsing is not what we want
+    # https://sphinx-tabs.readthedocs.io/en/latest/#sphinx-configuration
+    app.config.sphinx_tabs_disable_tab_closing = True
+
 
 def builder_inited_readthedocs(app):
 
