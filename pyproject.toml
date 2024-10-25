@@ -41,5 +41,6 @@ docs_gurobi_com = [
     "theme/static/*.svg",
     "theme/static/*.css",
     "theme/static/*.js",
+    "theme/static/*.ico",
     "latex/*",
 ]
