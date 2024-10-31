@@ -155,10 +155,10 @@ document.addEventListener("readthedocs-addons-data-ready", function (event) {
   `;
 
   // Inject the generated content into the placeholders created in versionflyout.html
-  document.getElementById("custom-rtd-flyout-content").innerHTML = flyout;
-  document.getElementById("rtd-version-label").innerHTML = thisVersionLabel;
+  document.getElementById("grb-rtd-flyout-content").innerHTML = flyout;
+  document.getElementById("grb-rtd-version-label").innerHTML = thisVersionLabel;
 
-  document.querySelector(".rst-current-version").addEventListener("click", function() {
+  document.querySelector(".grb-rtd-current-version").addEventListener("click", function() {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
     if (content.style.display === "block") {
