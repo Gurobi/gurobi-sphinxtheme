@@ -46,6 +46,8 @@ def configure_latex(config, git_commit_hash=None):
         newline,
         r"\newcommand{\GRBdocrevision}{", revision_string, "}",
         newline,
+        config.latex_elements.get("preamble", ""),
+        newline,
     ]
     # fmt: on
     config.latex_elements["preamble"] = "".join(preamble_parts)
