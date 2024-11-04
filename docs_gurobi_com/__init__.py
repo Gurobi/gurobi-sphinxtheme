@@ -6,9 +6,14 @@ import re
 from sphinx.util import logging
 
 from docs_gurobi_com.latex import configure_latex
+from docs_gurobi_com.toctree import extend_toctree
 
 logger = logging.getLogger(__name__)
 here = pathlib.Path(__file__).parent
+
+
+def html_page_context(app, pagename, templatename, context, doctree):
+    extend_toctree(pagename, context)
 
 
 def html_page_context_readthedocs(app, pagename, templatename, context, doctree):
@@ -172,6 +177,10 @@ def setup(app):
         functools.partial(config_inited, git_commit_hash=git_commit_hash),
     )
     app.connect("builder-inited", builder_inited)
+
+    # This needs to be invoked before furo's handler (default priority 500) to
+    # manipulate the toctree
+    app.connect("html-page-context", html_page_context, priority=250)
 
     # Additional configuration on readthedocs
     if readthedocs:

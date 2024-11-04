@@ -17,6 +17,7 @@ docs_gurobi_com = "docs_gurobi_com"
 
 [project.optional-dependencies]
 docs_gurobi_com = [
+    "beautifulsoup4",
     "sphinx_sitemap>=2.6,<2.7",
     "furo == 2024.1.29",
 ]
