@@ -152,6 +152,7 @@ def config_inited(app, config, git_commit_hash):
     # TODO: fold the builder_inited commands in here (requires that all users
     # add docs_gurobi_com as an *extension*, not just a theme).
     configure_latex(config, git_commit_hash)
+    app.add_js_file("scrolltree.js")
 
 
 def setup(app):
