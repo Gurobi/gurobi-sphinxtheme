@@ -23,7 +23,6 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
       gurobi_rtd_version_type = # "branch" for deployments, "external" for PRs
       gurobi_rtd_canonical_url = # the root url of the deployment
       gurobi_rtd_current_url = # root url of the current deployment
-      gurobi_gh_issue_url = # url to open a github issue for this repo
 
       pagename = # current page (defined by sphinx)
       theme_version_warning = "true" # can be set to 'false' in html_theme_options
@@ -43,7 +42,6 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
 
       export READTHEDOCS="True"
       export READTHEDOCS_VERSION_TYPE="branch"
-      export READTHEDOCS_GIT_CLONE_URL="git@github.com:Gurobi/repo.git"
       export READTHEDOCS_VERSION="current"
       export READTHEDOCS_CANONICAL_URL="./current/"
 
@@ -90,16 +88,6 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
             logger.warning("gurobi_rtd_version reset to 'current'")
             context["gurobi_rtd_current_url"] = context["gurobi_rtd_canonical_url"]
             context["gurobi_rtd_version"] = "current"
-
-    # URL for the issues page of the source repo.
-    git_clone_url = os.environ.get("READTHEDOCS_GIT_CLONE_URL")
-    match = re.match(r"git@github\.com:Gurobi/([\w-]+)\.git", git_clone_url)
-    if not match:
-        raise ValueError(f"Unexpected value: GIT_CLONE_URL={git_clone_url}")
-    repo_name = match.group(1)
-    context["gurobi_gh_issue_url"] = (
-        f"https://github.com/Gurobi/{repo_name}/issues/new?labels=bug&template=bug_report.md"
-    )
 
 
 def builder_inited(app):
