@@ -7,5 +7,5 @@ table.epilog th, table.epilog td {
 }
 
 svg.toctree-icon {
-  color: var(--color-sidebar-caption-text);
+  fill: var(--color-sidebar-caption-text);
 }
