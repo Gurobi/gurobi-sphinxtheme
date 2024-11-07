@@ -5,3 +5,7 @@ table.epilog {
 table.epilog th, table.epilog td {
   border-color: transparent;
 }
+
+svg.toctree-icon {
+  color: var(--color-sidebar-caption-text);
+}
