@@ -1,43 +1,58 @@
 {% extends "pagebase.html" %}
 
+{% block extrahead %}
+
+{{ super() }}
+
+{% if grb_readthedocs %}
+  {% if grb_rtd_version != "current" %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+  <script src="{{ pathto('_static/versionflyout.js', 1) }}"></script>
+  <meta content="1" name="readthedocs-addons-api-version"/>
+{% endif %}
+
+{% endblock %}
+
 {% block content %}
 
-<!-- Outdated or development warnings, based on RTD deployment -->
-{% if theme_version_warning == "true" and gurobi_rtd == "true" and gurobi_rtd_version_type == "branch" %}
-  {% if gurobi_rtd_version == "latest" %}
+{% if grb_readthedocs and grb_show_banner %}
+  {% if grb_version_status == "dev" %}
     <div class="admonition warning">
         <p class="admonition-title">Warning</p>
-        <p>You are reading the documentation for the development version of Gurobi. Please see
-        <a class="reference external" href="{{ gurobi_rtd_current_url }}{{ pagename }}.html">version 11.0</a>
+        <p>You are reading the documentation for the development version
+        '{{ grb_rtd_version }}' of Gurobi. Please see
+        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">
+        version {{ grb_current_version }}</a>
         for the public documentation.
         </p>
     </div>
-  {% elif gurobi_rtd_version == "12.0" %}
+  {% elif grb_version_status == "beta" %}
     <div class="admonition warning">
         <p class="admonition-title">Warning</p>
-        <p>You are reading the documentation for the beta release of Gurobi version
-        {{ gurobi_rtd_version }}. Please see
-        <a class="reference external" href="{{ gurobi_rtd_current_url }}{{ pagename }}.html">version 11.0</a>
+        <p>You are reading the documentation for the beta release of Gurobi
+        version {{ grb_rtd_version }}. Please see
+        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">
+        version {{ grb_current_version }}</a>
         for documentation of the current Gurobi release.</p>
     </div>
-  {% elif not (gurobi_rtd_version == "current" or gurobi_rtd_version == "current" or gurobi_rtd_version == "11.0") %}
+  {% elif grb_version_status == "old" %}
     <div class="admonition warning">
         <p class="admonition-title">Warning</p>
-        <p>You are reading the documentation for Gurobi version {{ gurobi_rtd_version }},
+        <p>You are reading the documentation for Gurobi version {{ grb_rtd_version }},
         an older release. Please see
-        <a class="reference external" href="{{ gurobi_rtd_current_url }}{{ pagename }}.html">version 11.0</a>
+        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">
+        version {{ grb_current_version }}</a>
         for documentation of the current Gurobi release.
         </p>
     </div>
   {% endif %}
 {% endif %}
 
-<!-- Write the page content -->
 <article role="main">
 {{ super() }}
 </article>
 
-<!-- Add help and feedback footer -->
 {% if theme_feedback_banner == "true" %}
 <aside class="topic">
   <p class="topic-title">Help and Feedback</p>
@@ -53,7 +68,6 @@
                       d="M11.5 7a4.499 4.499 0 11-8.998 0A4.499 4.499 0 0111.5 7zm-.82 4.74a6 6 0 111.06-1.06l3.04 3.04a.75.75 0 11-1.06 1.06l-3.04-3.04z">
                 </path>
               </svg>
-              <!-- showSearchModal() triggers the readthedocs-sphinx-search popup -->
               Press <kbd>/</kbd> or click to
               <a
                 class="reference external"
@@ -114,7 +128,7 @@
                       d="M10.5 5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm.061 3.073a4 4 0 10-5.123 0 6.004 6.004 0 00-3.431 5.142.75.75 0 001.498.07 4.5 4.5 0 018.99 0 .75.75 0 101.498-.07 6.005 6.005 0 00-3.432-5.142z">
                 </path>
               </svg> <a class="reference external"
-                        href="https://support.gurobi.com/hc/requests/new?ticket_form_id=360000523752&tf_subject=Documentation+issue&tf_360009525951=doc_issue&tf_24952793658385={{ gurobi_rtd_canonical_url }}{{ pagename }}.html">Contact
+                        href="https://support.gurobi.com/hc/requests/new?ticket_form_id=360000523752&tf_subject=Documentation+issue&tf_360009525951=doc_issue&tf_24952793658385={{ grb_this_url }}{{ pagename }}.html">Contact
                 support</a>
             </p>
           </td>

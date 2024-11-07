@@ -5,6 +5,7 @@ import re
 
 from sphinx.util import logging
 
+from docs_gurobi_com.versions import VersionHandler
 from docs_gurobi_com.latex import configure_latex
 
 logger = logging.getLogger(__name__)
@@ -13,37 +14,36 @@ here = pathlib.Path(__file__).parent
 
 def html_page_context_readthedocs(app, pagename, templatename, context, doctree):
     """
-    Configures jinja variables based on readthedocs environment variables. If
-    they are not set, no version warning banner is shown.
+    Configures jinja variables based on readthedocs environment variables.
 
     A build on readthedocs will have the following jinja variables available:
 
-      gurobi_rtd = "true"
-      gurobi_rtd_version = # version tag: 10.0, 11.0, current, latest
-      gurobi_rtd_version_type = # "branch" for deployments, "external" for PRs
-      gurobi_rtd_canonical_url = # the root url of the deployment
-      gurobi_rtd_current_url = # root url of the current deployment
-      gurobi_gh_issue_url = # url to open a github issue for this repo
+      grb_readthedocs = True
+      grb_show_banner = True/False
+      grb_rtd_version = readthedocs version slug
+      grb_current_version = <version number of current release>
+      grb_version_status = one of: current, beta, dev, old
+      grb_current_url = /url/to/current/build
+      grb_this_url = /url/to/this/build
 
       pagename = # current page (defined by sphinx)
       theme_version_warning = "true" # can be set to 'false' in html_theme_options
       theme_feedback_banner = "true" # can be set to 'false' in html_theme_options
       theme_construction_warning = "true" # can be set to 'false' in html_theme_options
 
-    With these jinja variables, the URL of the current page in an RTD deployment
-    should be:
+    With these jinja variables, the current page should be at:
 
-      {{ gurobi_rtd_canonical_url }}{{ pagename }}.html
+      {{ grb_this_url }}{{ pagename }}.html
 
-    and the same page on the current branch (i.e. for redirect links) should be:
+    While the URL of the same page on the 'current' branch (i.e. for redirect
+    links) should be:
 
-      {{ gurobi_rtd_current_url }}{{ pagename }}.html
+      {{ grb_current_url }}{{ pagename }}.html
 
     A basic testing setup for the current branch is:
 
       export READTHEDOCS="True"
       export READTHEDOCS_VERSION_TYPE="branch"
-      export READTHEDOCS_GIT_CLONE_URL="git@github.com:Gurobi/repo.git"
       export READTHEDOCS_VERSION="current"
       export READTHEDOCS_CANONICAL_URL="./current/"
 
@@ -58,48 +58,16 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
       export READTHEDOCS_CANONICAL_URL="./latest/"
     """
 
-    # Note: RTD advised to set this manually, but for now we should not. It
-    # enables furo's readthedocs customisation which has not kept up with the
-    # addons.
-    # Tell Jinja2 templates the build is running on Read the Docs
-    # context["READTHEDOCS"] = True
+    version_handler = VersionHandler()
+    grb_context = version_handler.create_context(os.environ)
+    context.update(grb_context)
 
-    # Version and url information. Store these in distinct jinja variables
-    # to prevent clashes with themes we inherit from.
-    context["gurobi_rtd"] = "true"
-    context["gurobi_rtd_version"] = os.environ.get("READTHEDOCS_VERSION")
-    context["gurobi_rtd_version_type"] = os.environ.get("READTHEDOCS_VERSION_TYPE")
-    context["gurobi_rtd_canonical_url"] = os.environ.get("READTHEDOCS_CANONICAL_URL")
-
-    # For branch (i.e. not pull request) builds, get the canonical URL of
-    # the current version.
-    if context["gurobi_rtd_version_type"] == "branch":
-        stem, mid, _ = context["gurobi_rtd_canonical_url"].rpartition(
-            context["gurobi_rtd_version"]
-        )
-        if mid and stem.endswith("/"):
-            context["gurobi_rtd_current_url"] = stem + "current/"
-        else:
-            # Might not be versioned. Don't render the banner.
-            logger.warning(
-                "Unexpected value: url={} version={}".format(
-                    context["gurobi_rtd_canonical_url"],
-                    context["gurobi_rtd_version"],
-                )
-            )
-            logger.warning("gurobi_rtd_version reset to 'current'")
-            context["gurobi_rtd_current_url"] = context["gurobi_rtd_canonical_url"]
-            context["gurobi_rtd_version"] = "current"
-
-    # URL for the issues page of the source repo.
-    git_clone_url = os.environ.get("READTHEDOCS_GIT_CLONE_URL")
-    match = re.match(r"git@github\.com:Gurobi/([\w-]+)\.git", git_clone_url)
-    if not match:
-        raise ValueError(f"Unexpected value: GIT_CLONE_URL={git_clone_url}")
-    repo_name = match.group(1)
-    context["gurobi_gh_issue_url"] = (
-        f"https://github.com/Gurobi/{repo_name}/issues/new?labels=bug&template=bug_report.md"
-    )
+    # Note: RTD adviseds to set this manually:
+    #
+    #   context["READTHEDOCS"] = True
+    #
+    # but for now we should not. It enables furo's readthedocs customisation
+    # which has not kept up with the evolution of RTD addons.
 
 
 def builder_inited(app):

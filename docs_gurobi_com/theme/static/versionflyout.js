@@ -1,14 +1,6 @@
-// Once we are rendering the flyout ourselves, we just disable the flyout in
-// the RTD dashboard. This (presumably) sets flyout.enabled to false in the
-// addons json payload, which disables building the default flyout.
-
-// Selector based on:
-// https://github.com/python/cpython/pull/116966/files
-//
-// Flyout (to do) based on:
-// https://github.com/readthedocs/sphinx_rtd_theme/pull/1526/files
-//
-// With assistance from chatGPT
+// We are rendering the flyout ourselves so we disable the flyout in the RTD
+// dashboard. This sets flyout.enabled to false in the addons json payload,
+// which disables building the default flyout.
 
 // Retrieve content attribute from a meta tag with the given name
 function getMetaContentByName(name) {

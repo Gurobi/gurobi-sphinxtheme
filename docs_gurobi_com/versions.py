@@ -1,51 +1,76 @@
-""" Keeps version customisation (beta, dev, current, etc). This should be
-the central place for updates with a new release.
+class VersionHandler:
 
-Note that this deals with version numbering, not 'latest'/'current'.
-"""
+    GUROBI_CURRENT_RELEASE = "11.0"
+    GUROBI_BETA_RELEASE = "12.0"
 
+    def is_released_version(self, version):
+        """Expects a version label from conf.py"""
+        try:
+            numeric = float(version)
+            return numeric <= float(self.GUROBI_CURRENT_RELEASE)
+        except ValueError:
+            return False
 
-def is_released_version(version):
-    try:
-        numeric = float(version)
-        return numeric < 12.0
-    except ValueError:
-        return False
+    def is_current_version(self, version):
+        """Expects a version label from conf.py"""
+        return version == self.GUROBI_CURRENT_RELEASE
 
+    def is_beta_version(self, version):
+        """Expects a version label from conf.py"""
+        return version == self.GUROBI_BETA_RELEASE
 
-def is_current_version(version):
-    return version == "11.0"
+    def create_context(self, environ):
+        """Given an environment variable dictionary (e.g. os.environ return jinja
+        variables to use the html builds).
 
+        Returns:
 
-def is_beta_version(version):
-    return version == "12.0"
+            {
+                "grb_readthedocs": True/False
+                "grb_show_banner": True/False
+                "grb_rtd_version": <readthedocs version slug>
+                "grb_current_version": <version number of current release>
+                "grb_version_status": one of: "current", "beta", "dev", "old"
+                "grb_this_url": "/url/to/this/build"
+                "grb_current_url": "/url/to/current/build"
+            }
+        """
+        context = {}
 
+        readthedocs = environ.get("READTHEDOCS", "") == "True"
+        version = environ.get("READTHEDOCS_VERSION", "")
+        version_type = environ.get("READTHEDOCS_VERSION_TYPE", "")
+        canonical_url = environ.get("READTHEDOCS_CANONICAL_URL", "")
 
-def test_is_released_version():
-    assert is_released_version("2.0")
-    assert is_released_version("10.0")
-    assert is_released_version("11.0")
-    assert not is_released_version("12.0")
-    assert not is_released_version("12.9")
-    assert not is_released_version("12.9.dev")
-    assert not is_released_version("v12-nonlinear")
+        try:
+            numeric_version = float(version)
+        except ValueError:
+            numeric_version = None
 
+        context["grb_readthedocs"] = readthedocs
+        if readthedocs and version_type == "branch":
+            if version == "current" or version == self.GUROBI_CURRENT_RELEASE:
+                context["grb_show_banner"] = False
+                context["grb_version_status"] = "current"
+            elif version == self.GUROBI_BETA_RELEASE:
+                context["grb_show_banner"] = True
+                context["grb_version_status"] = "beta"
+            elif numeric_version is None or numeric_version > float(
+                self.GUROBI_CURRENT_RELEASE
+            ):
+                context["grb_show_banner"] = True
+                context["grb_version_status"] = "dev"
+            else:
+                assert numeric_version < float(self.GUROBI_CURRENT_RELEASE)
+                context["grb_show_banner"] = True
+                context["grb_version_status"] = "old"
 
-def test_is_current_version():
-    assert not is_current_version("2.0")
-    assert not is_current_version("10.0")
-    assert is_current_version("11.0")
-    assert not is_current_version("12.0")
-    assert not is_current_version("12.9")
-    assert not is_current_version("12.9.dev")
-    assert not is_current_version("v12-nonlinear")
+            stem, mid, _ = canonical_url.rpartition(version)
+            assert mid and stem.endswith("/")
+            context["grb_current_url"] = stem + "current/"
 
+            context["grb_rtd_version"] = version
+            context["grb_current_version"] = self.GUROBI_CURRENT_RELEASE
+            context["grb_this_url"] = canonical_url
 
-def test_is_beta_version():
-    assert not is_beta_version("2.0")
-    assert not is_beta_version("10.0")
-    assert not is_beta_version("11.0")
-    assert is_beta_version("12.0")
-    assert not is_beta_version("12.9")
-    assert not is_beta_version("12.9.dev")
-    assert not is_beta_version("v12-nonlinear")
+        return context

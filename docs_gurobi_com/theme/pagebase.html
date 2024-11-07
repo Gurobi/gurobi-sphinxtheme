@@ -1,16 +1,5 @@
 {% extends "base.html" %}
 
-{% block extrahead %}
-{{ super() }}
-{% if gurobi_rtd_version != "current" %}
-<meta name="robots" content="noindex">
-{% endif %}
-{% if gurobi_rtd %}
-<script src="{{ pathto('_static/versionflyout.js', 1) }}"></script>
-<meta content="1" name="readthedocs-addons-api-version"/>
-{% endif %}
-{% endblock %}
-
 {% block body -%}
 {{ super() }}
 {% include "partials/icons.html" %}
