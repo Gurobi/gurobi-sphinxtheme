@@ -5,7 +5,7 @@ import re
 
 from sphinx.util import logging
 
-from docs_gurobi_com.context import ContextBuilder
+from docs_gurobi_com.versions import VersionHandler
 from docs_gurobi_com.latex import configure_latex
 
 logger = logging.getLogger(__name__)
@@ -58,8 +58,8 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
       export READTHEDOCS_CANONICAL_URL="./latest/"
     """
 
-    builder = ContextBuilder()
-    grb_context = builder.create_context(os.environ)
+    version_handler = VersionHandler()
+    grb_context = version_handler.create_context(os.environ)
     context.update(grb_context)
 
     # Note: RTD adviseds to set this manually:
