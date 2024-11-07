@@ -112,6 +112,7 @@ def builder_inited_readthedocs(app):
         "genindex.html",
         "404.html",
         "search.html",
+        "index_pdf.html",
     ]
 
 
