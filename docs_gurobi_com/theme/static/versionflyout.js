@@ -28,21 +28,6 @@ function getVersionedURLString(baseUrl) {
   return appendToBaseUrl(baseUrl, relativeUrl);
 }
 
-// Customise naming by version slug.
-// This way we are explicit about the meaning of 'current' and can
-// mark the beta version explicitly.
-// Note: the explicit 11.0 version and 'current' are separate links, though
-// they hold the same content.
-function getVersionName(slug) {
-  if (slug === "current") {
-    return "Current (11.0)";
-  } else if (slug == "12.0") {
-    return "12.0 (Beta)";
-  } else {
-    return slug;
-  }
-}
-
 // Process the config.versions.active section of the addons payload, returning
 // a new versions array for rendering the flyout.
 // 1. Sorts so that we have the order:
@@ -60,7 +45,7 @@ function getVersionsArray(config) {
     })
     .map(version => ({
       slug: version.slug,
-      name: getVersionName(version.slug),
+      name: getFlyoutVersionNameFromSlug(version.slug),
       url: getVersionedURLString(version.urls.documentation)
     }));
 }
@@ -116,7 +101,7 @@ function renderDownloads(config) {
 document.addEventListener("readthedocs-addons-data-ready", function (event) {
   const config = event.detail.data();
   const thisVersionSlug = config.versions.current.slug;
-  const thisVersionName = getVersionName(thisVersionSlug);
+  const thisVersionName = getFlyoutVersionNameFromSlug(thisVersionSlug);
   const versionsArray = getVersionsArray(config);
 
   const flyout = `
