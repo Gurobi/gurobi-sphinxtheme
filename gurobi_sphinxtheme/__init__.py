@@ -31,8 +31,8 @@ def builder_inited(app):
                 "sidebar-tree-space-above": "1rem",
                 "sidebar-caption-space-above": "0.5rem",
             },
-            "light_logo": "gurobi_light.svg",
-            "dark_logo": "gurobi_dark.svg",
+            # "light_logo": "gurobi_light.svg",
+            # "dark_logo": "gurobi_dark.svg",
         }
     )
 
