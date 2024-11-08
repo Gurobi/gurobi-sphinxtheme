@@ -9,3 +9,7 @@ table.epilog th, table.epilog td {
 svg.toctree-icon {
   fill: var(--color-sidebar-caption-text);
 }
+
+.sidebar-tree .homelink {
+  padding-left: 0.7rem;
+}
