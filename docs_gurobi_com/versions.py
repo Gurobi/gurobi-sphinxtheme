@@ -11,10 +11,6 @@ class VersionHandler:
         except ValueError:
             return False
 
-    def is_current_version(self, version):
-        """Expects a version label from conf.py"""
-        return version == self.GUROBI_CURRENT_RELEASE
-
     def is_beta_version(self, version):
         """Expects a version label from conf.py"""
         return version == self.GUROBI_BETA_RELEASE

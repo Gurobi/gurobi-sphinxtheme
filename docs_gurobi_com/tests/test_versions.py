@@ -183,15 +183,6 @@ class TestHandler_v11(unittest.TestCase):
         assert not self.handler.is_released_version("12.9.dev")
         assert not self.handler.is_released_version("v12-nonlinear")
 
-    def test_is_current_version(self):
-        assert not self.handler.is_current_version("2.0")
-        assert not self.handler.is_current_version("10.0")
-        assert self.handler.is_current_version("11.0")
-        assert not self.handler.is_current_version("12.0")
-        assert not self.handler.is_current_version("12.9")
-        assert not self.handler.is_current_version("12.9.dev")
-        assert not self.handler.is_current_version("v12-nonlinear")
-
     def test_is_beta_version(self):
         assert not self.handler.is_beta_version("2.0")
         assert not self.handler.is_beta_version("10.0")
