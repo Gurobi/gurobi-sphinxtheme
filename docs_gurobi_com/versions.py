@@ -1,13 +1,15 @@
 class VersionHandler:
 
     GUROBI_CURRENT_RELEASE = "11.0"
-    GUROBI_BETA_RELEASE = "12.0"
+    GUROBI_BETA_RELEASE = None
+    CURRENT_RELEASE_MIN = 11.0
+    CURRENT_RELEASE_MAX = 12.0
 
     def is_released_version(self, version):
         """Expects a version label from conf.py"""
         try:
             numeric = float(version)
-            return numeric <= float(self.GUROBI_CURRENT_RELEASE)
+            return numeric <= self.CURRENT_RELEASE_MAX
         except ValueError:
             return False
 
@@ -45,21 +47,29 @@ class VersionHandler:
 
         context["grb_readthedocs"] = readthedocs
         if readthedocs and version_type == "branch":
-            if version == "current" or version == self.GUROBI_CURRENT_RELEASE:
+            if version == "current":
+                # Readthedocs 'current'
                 context["grb_show_banner"] = False
                 context["grb_version_status"] = "current"
             elif version == self.GUROBI_BETA_RELEASE:
+                # Version specifically marked as the current beta
                 context["grb_show_banner"] = True
                 context["grb_version_status"] = "beta"
-            elif numeric_version is None or numeric_version > float(
-                self.GUROBI_CURRENT_RELEASE
-            ):
+            elif numeric_version is None:
+                # Non-numeric development versions e.g. v12-nonlinear
                 context["grb_show_banner"] = True
                 context["grb_version_status"] = "dev"
-            else:
+            elif numeric_version > self.CURRENT_RELEASE_MAX:
+                # Numeric development version (if we ever have it) e.g. 12.9
+                context["grb_show_banner"] = True
+                context["grb_version_status"] = "dev"
+            elif numeric_version < self.CURRENT_RELEASE_MIN:
                 assert numeric_version < float(self.GUROBI_CURRENT_RELEASE)
                 context["grb_show_banner"] = True
                 context["grb_version_status"] = "old"
+            else:
+                context["grb_show_banner"] = False
+                context["grb_version_status"] = "current"
 
             stem, mid, _ = canonical_url.rpartition(version)
             assert mid and stem.endswith("/")
