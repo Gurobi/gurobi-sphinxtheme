@@ -2,7 +2,7 @@ class VersionHandler:
 
     GUROBI_CURRENT_RELEASE = "12.0"
     GUROBI_BETA_RELEASE = None
-    CURRENT_RELEASE_MIN = 11.0
+    CURRENT_RELEASE_MIN = 12.0
     CURRENT_RELEASE_MAX = 12.0
 
     def is_released_version(self, version):
