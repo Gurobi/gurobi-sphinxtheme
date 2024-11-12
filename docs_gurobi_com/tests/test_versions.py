@@ -36,10 +36,10 @@ class TestHandlerCurrentDefaults(unittest.TestCase):
         }
         expected = {
             "grb_readthedocs": True,
-            "grb_show_banner": False,
+            "grb_show_banner": True,
             "grb_rtd_version": "11.0",
             "grb_current_version": "12.0",
-            "grb_version_status": "current",
+            "grb_version_status": "old",
             "grb_current_url": "https://docs.gurobi.com/opti/current/",
             "grb_this_url": "https://docs.gurobi.com/opti/11.0/",
         }
