@@ -62,6 +62,11 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
     grb_context = version_handler.create_context(os.environ)
     context.update(grb_context)
 
+    # If custom banner HTML source was provided via html_context in conf.py, do
+    # not display the default version-based warning banners.
+    if context.get("grb_custom_banner", ""):
+        context["grb_show_banner"] = False
+
     # Note: RTD adviseds to set this manually:
     #
     #   context["READTHEDOCS"] = True
