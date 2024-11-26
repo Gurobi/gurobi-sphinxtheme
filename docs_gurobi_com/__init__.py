@@ -18,49 +18,54 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
 
     A build on readthedocs will have the following jinja variables available:
 
-      grb_readthedocs = True
-      grb_show_banner = True/False
-      grb_rtd_version = readthedocs version slug
-      grb_current_version = <version number of current release>
-      grb_version_status = one of: current, beta, dev, old
-      grb_current_url = /url/to/current/build
-      grb_this_url = /url/to/this/build
+        grb_readthedocs = True
+        grb_show_banner = True/False
+        grb_rtd_version = readthedocs version slug
+        grb_current_version = <version number of current release>
+        grb_version_status = one of: current, beta, dev, old
+        grb_current_url = /url/to/current/build
+        grb_this_url = /url/to/this/build
 
-      pagename = # current page (defined by sphinx)
-      theme_version_warning = "true" # can be set to 'false' in html_theme_options
-      theme_feedback_banner = "true" # can be set to 'false' in html_theme_options
-      theme_construction_warning = "true" # can be set to 'false' in html_theme_options
+        pagename = # current page (defined by sphinx)
+        theme_version_warning = "true" # can be set to 'false' in html_theme_options
+        theme_feedback_banner = "true" # can be set to 'false' in html_theme_options
+        theme_construction_warning = "true" # can be set to 'false' in html_theme_options
 
     With these jinja variables, the current page should be at:
 
-      {{ grb_this_url }}{{ pagename }}.html
+        {{ grb_this_url }}{{ pagename }}.html
 
     While the URL of the same page on the 'current' branch (i.e. for redirect
     links) should be:
 
-      {{ grb_current_url }}{{ pagename }}.html
+        {{ grb_current_url }}{{ pagename }}.html
 
     A basic testing setup for the current branch is:
 
-      export READTHEDOCS="True"
-      export READTHEDOCS_VERSION_TYPE="branch"
-      export READTHEDOCS_VERSION="current"
-      export READTHEDOCS_CANONICAL_URL="./current/"
+        export READTHEDOCS="True"
+        export READTHEDOCS_VERSION_TYPE="branch"
+        export READTHEDOCS_VERSION="current"
+        export READTHEDOCS_CANONICAL_URL="./current/"
 
     To display the "old version" warning set:
 
-      export READTHEDOCS_VERSION="10.0"
-      export READTHEDOCS_CANONICAL_URL="./10.0/"
+        export READTHEDOCS_VERSION="10.0"
+        export READTHEDOCS_CANONICAL_URL="./10.0/"
 
     To display the "in development" warning set:
 
-      export READTHEDOCS_VERSION="latest"
-      export READTHEDOCS_CANONICAL_URL="./latest/"
+        export READTHEDOCS_VERSION="latest"
+        export READTHEDOCS_CANONICAL_URL="./latest/"
     """
 
     version_handler = VersionHandler()
     grb_context = version_handler.create_context(os.environ)
     context.update(grb_context)
+
+    # If custom banner HTML source was provided via html_context in conf.py, do
+    # not display the default version-based warning banners.
+    if context.get("grb_custom_banner", ""):
+        context["grb_show_banner"] = False
 
     # Note: RTD adviseds to set this manually:
     #
