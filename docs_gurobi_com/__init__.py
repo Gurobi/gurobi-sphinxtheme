@@ -79,7 +79,7 @@ def builder_inited(app):
     """Update configuration with some common properties used across
     docs.gurobi.com. Note that this overrides settings from individual project's
     conf.py files."""
-    app.config.copyright = "2024, Gurobi Optimization, LLC"
+    app.config.copyright = "2025, Gurobi Optimization, LLC"
     app.config.author = "Gurobi Optimization, LLC"
 
     # Local copy in static directory, from gurobi.com/favicon.ico
