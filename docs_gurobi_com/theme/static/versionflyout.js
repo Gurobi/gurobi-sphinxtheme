@@ -98,7 +98,8 @@ function renderDownloads(config) {
   return downloadsHTML;
 }
 
-document.addEventListener("readthedocs-addons-data-ready", function (event) {
+document.addEventListener("readthedocs-addons-internal-data-ready", function (event) {
+
   const config = event.detail.data();
   const thisVersionSlug = config.versions.current.slug;
   const thisVersionName = getFlyoutVersionNameFromSlug(thisVersionSlug);
