@@ -11,6 +11,16 @@
   <script src="https://docs.gurobi.com/current/_static/version-slug-label.js"></script>
   <script src="{{ pathto('_static/versionflyout.js', 1) }}"></script>
   <meta content="1" name="readthedocs-addons-api-version"/>
+  {% if grb_version_status == "current" or grb_version_status == "old" or grb_version_status == "beta" %}
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q9J8EF61TH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-Q9J8EF61TH');
+    </script>
+  {% endif %}
 {% endif %}
 
 {% endblock %}
