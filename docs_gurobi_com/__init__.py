@@ -5,6 +5,7 @@ import re
 
 from sphinx.util import logging
 
+from docs_gurobi_com.checkbuilder import CheckBuilder
 from docs_gurobi_com.versions import VersionHandler
 from docs_gurobi_com.latex import configure_latex
 
@@ -146,6 +147,9 @@ def setup(app):
         functools.partial(config_inited, git_commit_hash=git_commit_hash),
     )
     app.connect("builder-inited", builder_inited)
+
+    # Custom builder to run a few integrity checks
+    app.add_builder(CheckBuilder)
 
     # Additional configuration on readthedocs
     if readthedocs:
