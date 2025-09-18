@@ -1,7 +1,10 @@
 class VersionHandler:
 
+    # String values or None
     GUROBI_CURRENT_RELEASE = "12.0"
-    GUROBI_BETA_RELEASE = None
+    GUROBI_BETA_RELEASE = "13.0"
+
+    # Numeric values
     CURRENT_RELEASE_MIN = 12.0
     CURRENT_RELEASE_MAX = 12.0
 
