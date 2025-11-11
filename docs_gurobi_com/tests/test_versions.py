@@ -74,10 +74,10 @@ class TestHandlerCurrentDefaults(unittest.TestCase):
         }
         expected = {
             "grb_readthedocs": True,
-            "grb_show_banner": True,
+            "grb_show_banner": False,
             "grb_rtd_version": "13.0",
             "grb_current_version": "12.0",
-            "grb_version_status": "beta",
+            "grb_version_status": "current",
             "grb_current_url": "<docs-url>/current/",
             "grb_this_url": "<docs-url>/13.0/",
         }
@@ -89,10 +89,11 @@ class TestHandlerCurrentDefaults(unittest.TestCase):
         assert self.handler.is_released_version("10.0")
         assert self.handler.is_released_version("11.0")
         assert self.handler.is_released_version("12.0")
-        assert not self.handler.is_released_version("12.9")
-        assert not self.handler.is_released_version("12.9.dev")
+        assert self.handler.is_released_version("13.0")
+        assert not self.handler.is_released_version("13.9")
+        assert not self.handler.is_released_version("13.9.dev")
         assert not self.handler.is_released_version("v12-nonlinear")
-        assert not self.handler.is_released_version("13.0")
+        assert not self.handler.is_released_version("14.0")
 
     def test_is_beta_version(self):
         assert not self.handler.is_beta_version("2.0")
@@ -102,7 +103,7 @@ class TestHandlerCurrentDefaults(unittest.TestCase):
         assert not self.handler.is_beta_version("12.9")
         assert not self.handler.is_beta_version("12.9.dev")
         assert not self.handler.is_beta_version("v12-nonlinear")
-        assert self.handler.is_beta_version("13.0")
+        assert not self.handler.is_beta_version("13.0")
 
 
 class TestHandler_v11(unittest.TestCase):
