@@ -23,6 +23,7 @@ def builder_inited(app):
                 "color-brand-visited": "#1675A9",
                 "sidebar-tree-space-above": "1rem",
                 "sidebar-caption-space-above": "0.5rem",
+                "font-stack": "Aptos, sans-serif",
             },
             "dark_css_variables": {
                 "color-brand-primary": "#DC4747",
