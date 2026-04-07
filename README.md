@@ -15,7 +15,7 @@ gurobi-sphinxtheme @ git+https://github.com/Gurobi/gurobi-sphinxtheme.git@main
 
 ```
 project = "<project title>"
-copyright = "2025, Gurobi Optimization, LLC"
+copyright = "Gurobi Optimization, LLC"
 author = "Gurobi Optimization, LLC"
 html_title = "<title to appear in browser tabs>"
 
