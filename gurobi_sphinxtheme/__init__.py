@@ -43,3 +43,8 @@ def setup(app):
     app.connect("builder-inited", builder_inited)
     # Need higher priority to overrule sphinx-tabs
     app.add_css_file("gurobi-tabs.css", priority=600)
+
+    return {
+        "parallel_read_safe": True,
+        "parallel_write_safe": True,
+    }
