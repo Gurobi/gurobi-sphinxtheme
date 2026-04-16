@@ -2,6 +2,8 @@ import pathlib
 
 from sphinx.util import logging
 
+__version__ = "2.1.0"
+
 logger = logging.getLogger(__name__)
 here = pathlib.Path(__file__).parent
 
@@ -41,3 +43,9 @@ def setup(app):
     app.connect("builder-inited", builder_inited)
     # Need higher priority to overrule sphinx-tabs
     app.add_css_file("gurobi-tabs.css", priority=600)
+
+    return {
+        "version": __version__,
+        "parallel_read_safe": True,
+        "parallel_write_safe": True,
+    }
