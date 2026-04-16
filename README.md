@@ -20,7 +20,7 @@ author = "Gurobi Optimization, LLC"
 html_title = "<title to appear in browser tabs>"
 
 html_theme = "gurobi_sphinxtheme"
-html_favicon = "https://www.gurobi.com/favicon.ico"
+html_favicon = "https://docs.gurobi.com/current/_static/favicon.ico"
 ```
 
 We also have a `dev` branch for development which should only be used by

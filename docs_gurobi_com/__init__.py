@@ -5,6 +5,8 @@ import re
 
 from sphinx.util import logging
 
+from gurobi_sphinxtheme import __version__
+
 from docs_gurobi_com.checkbuilder import CheckBuilder
 from docs_gurobi_com.versions import VersionHandler
 from docs_gurobi_com.latex import configure_latex
@@ -59,9 +61,8 @@ def html_page_context_readthedocs(app, pagename, templatename, context, doctree)
         export READTHEDOCS_CANONICAL_URL="./latest/"
     """
 
-    version_handler = VersionHandler()
-    grb_context = version_handler.create_context(os.environ)
-    context.update(grb_context)
+    # Reuse cached context from builder initialization
+    context.update(app.grb_context)
 
     # If custom banner HTML source was provided via html_context in conf.py, do
     # not display the default version-based warning banners.
@@ -104,6 +105,10 @@ def builder_inited(app):
 
 
 def builder_inited_readthedocs(app):
+
+    # Read environment once and cache context for parallel builds
+    version_handler = VersionHandler()
+    app.grb_context = version_handler.create_context(os.environ)
 
     # Set canonical URL from the Read the Docs Domain
     app.config.html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "")
@@ -160,3 +165,9 @@ def setup(app):
         # The sphinx-sitemap extension requires html_baseurl to be set. This is
         # only done if running on readthedocs, so only enable it there.
         app.setup_extension("sphinx_sitemap")
+
+    return {
+        "version": __version__,
+        "parallel_read_safe": True,
+        "parallel_write_safe": True,
+    }

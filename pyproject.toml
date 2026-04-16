@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gurobi_sphinxtheme"
-version = "1.0.0"
+dynamic = ["version"]
 description = "Gurobi Sphinx theme"
 readme = "README.md"
 dependencies = [
@@ -26,6 +26,9 @@ packages = [
     "gurobi_sphinxtheme",
     "docs_gurobi_com",
 ]
+
+[tool.setuptools.dynamic]
+version = {attr = "gurobi_sphinxtheme.__version__"}
 
 [tool.setuptools.package-data]
 gurobi_sphinxtheme = [
