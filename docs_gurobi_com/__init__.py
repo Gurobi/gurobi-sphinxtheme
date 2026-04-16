@@ -5,6 +5,7 @@ import re
 
 from sphinx.util import logging
 
+from gurobi_sphinxtheme import __version__
 from docs_gurobi_com.versions import VersionHandler
 from docs_gurobi_com.latex import configure_latex
 
@@ -161,6 +162,7 @@ def setup(app):
         app.setup_extension("sphinx_sitemap")
 
     return {
+        "version": __version__,
         "parallel_read_safe": True,
         "parallel_write_safe": True,
     }
