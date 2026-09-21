@@ -55,10 +55,10 @@ class TestHandlerCurrentDefaults(unittest.TestCase):
         }
         expected = {
             "grb_readthedocs": True,
-            "grb_show_banner": False,
+            "grb_show_banner": True,
             "grb_rtd_version": "12.0",
             "grb_current_version": "13.0",
-            "grb_version_status": "current",
+            "grb_version_status": "old",
             "grb_current_url": "<docs-url>/current/",
             "grb_this_url": "<docs-url>/12.0/",
         }
@@ -84,6 +84,25 @@ class TestHandlerCurrentDefaults(unittest.TestCase):
         context = self.handler.create_context(environ)
         self.assertEqual(context, expected)
 
+    def test_v14(self):
+        environ = {
+            "READTHEDOCS": "True",
+            "READTHEDOCS_VERSION_TYPE": "branch",
+            "READTHEDOCS_VERSION": "14.0",
+            "READTHEDOCS_CANONICAL_URL": "<docs-url>/14.0/",
+        }
+        expected = {
+            "grb_readthedocs": True,
+            "grb_show_banner": True,
+            "grb_rtd_version": "14.0",
+            "grb_current_version": "13.0",
+            "grb_version_status": "beta",
+            "grb_current_url": "<docs-url>/current/",
+            "grb_this_url": "<docs-url>/14.0/",
+        }
+        context = self.handler.create_context(environ)
+        self.assertEqual(context, expected)
+
     def test_is_released_version(self):
         assert self.handler.is_released_version("2.0")
         assert self.handler.is_released_version("10.0")
@@ -104,6 +123,7 @@ class TestHandlerCurrentDefaults(unittest.TestCase):
         assert not self.handler.is_beta_version("12.9.dev")
         assert not self.handler.is_beta_version("v12-nonlinear")
         assert not self.handler.is_beta_version("13.0")
+        assert self.handler.is_beta_version("14.0")
 
 
 class TestHandler_v11(unittest.TestCase):
