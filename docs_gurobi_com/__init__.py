@@ -133,6 +133,7 @@ def config_inited(app, config, git_commit_hash):
     # add docs_gurobi_com as an *extension*, not just a theme).
     configure_latex(config, git_commit_hash)
     app.add_js_file("scrolltree.js")
+    app.add_js_file("restore-anchor-scroll.js")
 
 
 def setup(app):

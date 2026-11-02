@@ -1,7 +1,11 @@
 // Once the page is loaded, scroll the toctree if necessary so that the section
 // the user is in is clearly visible.
+//
+// This waits for load rather than DOMContentLoaded because the sidebar scrolls
+// smoothly, and in Chromium a step of that animation during page load stops
+// the browser from re-applying the URL fragment scroll.
 
-document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function () {
 
     // Find the div containing the scrollable sidebar section, and the sidebar link
     // to the current page.
