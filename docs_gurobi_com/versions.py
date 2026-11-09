@@ -2,11 +2,11 @@ class VersionHandler:
 
     # String values or None
     GUROBI_CURRENT_RELEASE = "13.0"
-    GUROBI_BETA_RELEASE = "14.0"
+    GUROBI_BETA_RELEASE = None
 
     # Numeric values
     CURRENT_RELEASE_MIN = 13.0
-    CURRENT_RELEASE_MAX = 13.0
+    CURRENT_RELEASE_MAX = 14.0
 
     def is_released_version(self, version):
         """Expects a version label from conf.py"""
