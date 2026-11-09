@@ -35,8 +35,11 @@
         <p class="admonition-title">Warning</p>
         <p>You are reading the documentation for the development version
         '{{ grb_rtd_version }}' of Gurobi. Please see
-        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">
-        version {{ grb_current_version }}</a>
+        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">here</a><script>
+        // Pull link text from version-slug-label.js, if it loaded.
+        if (typeof getBannerCurrentLinkText === "function") {
+          document.currentScript.previousElementSibling.textContent = getBannerCurrentLinkText();
+        }</script>
         for the public documentation.
         </p>
     </div>
@@ -45,8 +48,11 @@
         <p class="admonition-title">Warning</p>
         <p>You are reading the documentation for the beta release of Gurobi
         version {{ grb_rtd_version }}. Please see
-        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">
-        version {{ grb_current_version }}</a>
+        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">here</a><script>
+        // Pull link text from version-slug-label.js, if it loaded.
+        if (typeof getBannerCurrentLinkText === "function") {
+          document.currentScript.previousElementSibling.textContent = getBannerCurrentLinkText();
+        }</script>
         for documentation of the current Gurobi release.</p>
     </div>
   {% elif grb_version_status == "old" %}
@@ -54,8 +60,11 @@
         <p class="admonition-title">Warning</p>
         <p>You are reading the documentation for Gurobi version {{ grb_rtd_version }},
         an older release. Please see
-        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">
-        version {{ grb_current_version }}</a>
+        <a class="reference external" href="{{ grb_current_url }}{{ pagename }}.html">here</a><script>
+        // Pull link text from version-slug-label.js, if it loaded.
+        if (typeof getBannerCurrentLinkText === "function") {
+          document.currentScript.previousElementSibling.textContent = getBannerCurrentLinkText();
+        }</script>
         for documentation of the current Gurobi release.
         </p>
     </div>
